@@ -6,7 +6,9 @@ void function(){
     // deps
     var _ = _ || (require && require('underscore'))
 
-    var World = artifice.World = function(){
+    var world = artifice.world = {}
+    
+    world.make = function(){
         return {
             _id         : 0
           , entities    : []
@@ -15,23 +17,30 @@ void function(){
         }
     }
 
-    World.addSystem = function(world, name, o){
+    // World, string, System -> World
+    world.addSystem = function(world, name, o){
         world.systems[name] = o
+        return world
     }
 
-    World.addComponent = function(world, name, fn){
+    // World, string, Function -> World
+    world.addComponent = function(world, name, fn){
         world.components[name] = fn
+        return world
     }
 
-    World.addEntity = function(world, entity){
+    // World, Entity -> World
+    world.addEntity = function(world, entity){
         entity.id = world._id += 1
         entity.systems.forEach(function(systemName){
-            World._resolveSystemDeps(world, entity, systemName)
+            resolveSystemDeps(world, entity, systemName)
         })
         world.entities.push(entity)
+        return world
     }
 
-    World._resolveSystemDeps = function(world, entity, systemName){
+    // World, Entity, string -> undefined
+    var resolveSystemDeps = function(world, entity, systemName){
         var sys = world.systems[systemName]
         if ( !sys.deps ) return
         sys.deps.forEach(function(depName){
@@ -40,13 +49,16 @@ void function(){
         })
     }
 
-    var Entity = artifice.Entity = function(){
+
+    var entity = artifice.entity = {}
+    
+    entity.make = function(){
         return {
             id: null
           , systems: []
           , components: {}
         }
     }
-
+    
 
 }(this)
