@@ -1,0 +1,13 @@
+{
+    "name": "artifice"
+  , "author": "Hugh FD Jackson <@hughfdjackson>"
+  , "description": "Entity System, functional-esque game framework"
+  , "version": "0.0.1"
+  , "main": "artifice.js"
+  , "keywords": [
+        "entity system"
+      , "component"
+      , "functional" 
+     ]
+  , "license": "MIT"
+}
