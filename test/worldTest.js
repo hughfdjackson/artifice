@@ -1,4 +1,5 @@
 var World = require('../').World
+  , Entity= require('../').Entity
   , a     = require('assert')
   , _     = require('underscore')
   , sinon = require('sinon')
@@ -29,6 +30,20 @@ test('component', function(){
 
     World.addComponent(w, 'bar', fn)
     a.equal(w.components.bar, fn)
+})
+
+
+test('World.addEntity', function(){
+    var w = World()
+      , e = Entity()
+      , e2= Entity()
+
+    World.addEntity(w, e)
+    World.addEntity(w, e2)
+    a.notEqual(e.id, null)
+    a.notEqual(e2.id, null)
+    a.notEqual(e.id, e2.id)
+
 })
 
 /*

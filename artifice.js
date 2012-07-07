@@ -23,10 +23,17 @@ void function(){
         world.components[name] = fn
     }
 
-    /*
     World.addEntity = function(world, entity){
+        entity.id = world._id += 1
         world.entities.push(entity)
     }
-    */
+
+    var Entity = artifice.Entity = function(){
+        return {
+            id: null
+          , systems: []
+          , components: {}
+        }
+    }
 
 }(this)
