@@ -46,27 +46,17 @@ test('World.addEntity', function(){
 
 })
 
-/*
-test('entity - basic', function(){
-    var w = World()
-      , e = w.entity()
-    
-    a.notEqual(e.id, undefined)
-    a.notEqual(e.id, w.entity().id)
+test('World.addEntity - with systems', function(){
+    var w   = World()
+      , e   = Entity()
+      , spy = sinon.spy(function(){ return { x: 0, y: 2 } })
 
-    a.ok(_.isObject(e.components))
-    a.ok(_.isObject(e.systems))
+    World.addSystem(w, 'render', { deps: ['position'] })
+    World.addComponent(w, 'position', spy)
+
+    e.systems = ['render']
+
+    World.addEntity(w, e)
+    a.equal(e.components.position.x, 0)
+    a.equal(e.components.position.y, 2)
 })
-
-test('entity - with systems', function(){
-    var w = World()
-    
-    w.system('foo', ['bar'], function(){})
-    w.component('bar', function(){ return { x: 3 } })
-
-    var e = w.entity(['foo'])
-
-    a.equal(e.components.bar.x, 3)
-})
-
-*/

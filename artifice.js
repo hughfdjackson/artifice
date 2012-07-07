@@ -25,7 +25,19 @@ void function(){
 
     World.addEntity = function(world, entity){
         entity.id = world._id += 1
+        entity.systems.forEach(function(systemName){
+            World._resolveSystemDeps(world, entity, systemName)
+        })
         world.entities.push(entity)
+    }
+
+    World._resolveSystemDeps = function(world, entity, systemName){
+        var sys = world.systems[systemName]
+        if ( !sys.deps ) return
+        sys.deps.forEach(function(depName){
+            var componentFn = world.components[depName]
+            if ( !entity.components[depName] ) entity.components[depName] = componentFn()
+        })
     }
 
     var Entity = artifice.Entity = function(){
@@ -35,5 +47,6 @@ void function(){
           , components: {}
         }
     }
+
 
 }(this)
