@@ -4,14 +4,15 @@ void function(){
     var artifice = {}
 
     // artifice.world
-    var World = artifice.World = function(){
-        return Object.create(World.prototype).init()
+    var world = artifice.world = function(){
+        return Object.create(world.prototype).init()
     }
 
-    World.prototype = { 
+    world.prototype = { 
 
-        init: function(){
-            this._id = 0
+        _id: 0
+
+      , init: function(){
             this.entities = []
             this.systems  = {}
             this.components = {}
@@ -19,30 +20,24 @@ void function(){
             return this
         }
 
-      , component: function(name, fn){
-            this.components[name] = fn
-            return this
-        }
-      , system: function(name, o){
-            this.systems[name] = o
-            return this
-        }
-      , entity: function(){
-            var e = Entity()
-            e.id = this._id ++
+      , add: function(e){
+            e.id = this._id
+            this._id += 1
             this.entities.push(e)
-            return e
+            return this
         }
     }
 
-    // entity
-    var Entity = function(){
+    /*
+    // artifice.entity
+    var entity = artifice.entity = function(){
         return {
             id: null
           , components: {}
           , systems: []
         }
     }
+    */
 
     // exports
     if ( typeof module != 'undefined' && module.exports ) 
