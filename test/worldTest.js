@@ -46,7 +46,7 @@ test('world.entity', function(){
 
     // has the right components
     a.ok(_.isObject(e.components))
-    a.ok(_.isObject(e.systems))
+    a.ok(_.isArray(e.systems))
     
     // unique, meaningful ids
     a.notEqual(e.id, e2.id)
@@ -56,9 +56,4 @@ test('world.entity', function(){
     // is added to the world.entities list
     a.ok(_.contains(w.entities, e))
     a.ok(_.contains(w.entities, e2))
-
-    // systems list into system keys
-    a.ok(e2.systems.foo)
-    a.ok(e2.systems.bar)
-
 })

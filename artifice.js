@@ -27,7 +27,7 @@ void function(){
             this.systems[name] = o
             return this
         }
-      , entity: function(systems, components){
+      , entity: function(){
             var e = Entity()
             e.id = this._id ++
             this.entities.push(e)
@@ -40,7 +40,7 @@ void function(){
         return {
             id: null
           , components: {}
-          , systems: {}
+          , systems: []
         }
     }
 
