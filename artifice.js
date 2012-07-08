@@ -9,6 +9,7 @@ void function(){
     }
 
     World.prototype = { 
+
         init: function(){
             this._id = 0
             this.entities = []
@@ -16,6 +17,30 @@ void function(){
             this.components = {}
 
             return this
+        }
+
+      , component: function(name, fn){
+            this.components[name] = fn
+            return this
+        }
+      , system: function(name, o){
+            this.systems[name] = o
+            return this
+        }
+      , entity: function(systems, components){
+            var e = Entity()
+            e.id = this._id ++
+            this.entities.push(e)
+            return e
+        }
+    }
+
+    // entity
+    var Entity = function(){
+        return {
+            id: null
+          , components: {}
+          , systems: {}
         }
     }
 
