@@ -26,6 +26,24 @@ void function(){
             this.entities.push(e)
             return this
         }
+
+        // run a system, or all systems against all entities
+      , run: function(name){
+            if ( !name ) 
+                Object.keys(this.systems).forEach(this.run.bind(this))
+            else         
+                this.systems[name](this, this._getEntitiesForSystem(name))
+
+            return this
+        }
+
+      , _getEntitiesForSystem: function(name){
+            var hasSys = function(e){ 
+                return e.systems.indexOf(name) != -1 
+            }
+
+            return this.entities.filter(hasSys)
+        }
     }
 
     /*
