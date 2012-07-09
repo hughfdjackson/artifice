@@ -10,6 +10,7 @@ void function(){
         return f
     }
 
+    // main constructor; makes a new 'world'
     var artifice = factory({ 
 
         _id: 0
@@ -32,8 +33,6 @@ void function(){
     artifice.entity    = factory({})
     artifice.system    = factory({})
     artifice.component = factory({})
-
-
 
     // exports
     if ( typeof module != 'undefined' && module.exports ) 
