@@ -2,13 +2,16 @@ void function(){
 
     // factory
     var factory = function(proto){
-        var f = function(){ 
-            var o = Object.create(proto)
-            return o.init ? o.init.apply(o, arguments) : o
+            var f = function(){ 
+                var o = Object.create(proto)
+                return o.init ? o.init.apply(o, arguments) : o
+            }
+            f.prototype = proto
+            return f
         }
-        f.prototype = proto
-        return f
-    }
+      , slice    = Function.prototype.call.bind([].slice)
+      , contains = function(arr, val){ return arr.indexOf(val) != -1 }
+      
 
     // main constructor; makes a new 'world'
     var artifice = factory({ 
@@ -25,6 +28,7 @@ void function(){
 
       , entity: function(){
             var e = artifice.entity()
+            e.addSystem.apply(e, arguments)
             e.id = this._id ++
             this.entities.push(e)
             return e
@@ -44,21 +48,32 @@ void function(){
             return this
         }
 
+      , run: function(){
+            slice(arguments).forEach(this._runOne.bind(this))
+            return this
+        }
+      , _runOne: function(name){
+            var es = this.entities.filter(function(e){ return contains(e.systems, name) })
+              , s  = this.systems[name].fn
+        
+            es.forEach(function(e){ s(this, e) }.bind(this))
+        }
+
     // , find: function(selector){}
-    // , run: function(){}
     })
 
-    artifice.entity     = factory({
+    artifice.entity = factory({
         
         id  : null
       , init: function(){
             this.components = {}
             this.systems    = []
+
             return this
         }
 
       , addSystem: function(){
-            var args = Array.prototype.slice.call(arguments)
+            var args = slice(arguments)
             this.systems = this.systems.concat(args)
             return this
         }

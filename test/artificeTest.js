@@ -32,17 +32,26 @@ test('artifice#entity() - creates & adds an entity', function(){
 
     var world = artifice()
       , e     = world.entity()
-      , e2    = world.entity()
+      , e2    = world.entity('render')
 
+    // have the right prototype
     a.ok(e instanceof artifice.entity)
-    a.ok(_.isNumber(e.id))
-    a.ok(_.contains(world.entities, e))
-
     a.ok(e2 instanceof artifice.entity)
+
+    // numerical ids
+    a.ok(_.isNumber(e.id))
     a.ok(_.isNumber(e2.id))
+
+    // that are unique
+    a.notEqual(e.id, e2.id)
+    
+    // automatically added to the entities of the world
+    a.ok(_.contains(world.entities, e))
     a.ok(_.contains(world.entities, e2))
 
-    a.notEqual(e.id, e2.id)
+    // calls addSystem (or has the same effect) with the arguments passed in
+    a.ok(_.contains(e2.systems, 'render'))
+    
 })
 
 test('artifice#component() - register a component', function(){
@@ -67,4 +76,25 @@ test('artifice#system() - register a system', function(){
     a.equal(world.systems.renderer.deps, deps)
     a.equal(world.systems.renderer.fn, fn)
     a.equal(world.systems.renderer.opts, opts)
+})
+
+test('artifice#run() - run a system, or systems, against the state of the world', function(){
+
+    var world = artifice()
+      , render= sinon.spy()
+      , move  = sinon.spy()
+
+    world.system('render', [], render)
+    world.system('move', [], move)
+    
+    var r = world.run('render', 'move')
+
+    a.equal(r, world)
+    a.ok(!render.called)
+    a.ok(!move.called)
+
+    var e = world.entity('render')
+
+    world.run('render')
+    a.ok(render.calledWith(world, e))
 })
