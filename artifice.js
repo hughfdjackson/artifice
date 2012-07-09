@@ -17,25 +17,25 @@ void function(){
 
       , init: function(){
             this.entities = []
-            this.systems  = {}
-            this.components = {}
+            this.systems  = Object.create(artifice.systems)
+            this.components = Object.create(artifice.components)
 
             return this
         }
 
-      , e: function(){
+      , entity: function(){
             var e = artifice.entity()
             e.id = this._id ++
             this.entities.push(e)
             return e
         }
       
-      , c: function(name, fn){
+      , component: function(name, fn){
             this.components[name] = fn
             return this
         }
 
-      , s: function(name, deps, fn, opts){
+      , system: function(name, deps, fn, opts){
             this.systems[name] = { 
                 deps: deps
               , fn  : fn
@@ -43,9 +43,32 @@ void function(){
             }
             return this
         }
+
+    // , find: function(selector){}
+    // , run: function(){}
     })
 
-    artifice.entity    = factory({})
+    artifice.entity     = factory({
+        
+        id  : null
+      , init: function(){
+            this.components = {}
+            this.systems    = []
+            return this
+        }
+
+      , addSystem: function(){
+            var args = Array.prototype.slice.call(arguments)
+            this.systems = this.systems.concat(args)
+            return this
+        }
+    })
+
+    // default systems
+    artifice.systems    = {}
+
+    // default components 
+    artifice.components = {}
 
     // exports
     if ( typeof module != 'undefined' && module.exports ) 
