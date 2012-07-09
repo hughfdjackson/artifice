@@ -16,14 +16,14 @@ test('init', function(){
 test('is extensible via prototype', function(){
 
     var world = artifice()
-
     artifice.prototype.foo = sinon.spy()
+
     world.foo()
 
     a.ok(artifice.prototype.foo.called)
 })
 
-test('world.prototype.e', function(){
+test('artifice.prototype.e', function(){
 
     var world = artifice()
       , e     = world.e()
@@ -38,4 +38,28 @@ test('world.prototype.e', function(){
     a.ok(_.contains(world.entities, e2))
 
     a.notEqual(e.id, e2.id)
+})
+
+test('artifice.prototype.c', function(){
+
+    var world = artifice()
+      , fn    = function(){}
+      , r     = world.c('render', fn)
+
+    a.equal(r, world)
+    a.equal(world.components.render, fn)
+})
+
+test('artifice.prototype.s', function(){
+    
+    var world = artifice()
+      , fn    = function(){}
+      , deps  = ['foo', 'bar']
+      , opts  = { global: true }
+      , r     = world.s('renderer', deps, fn, opts)
+
+    a.equal(r, world)
+    a.equal(world.systems.renderer.deps, deps)
+    a.equal(world.systems.renderer.fn, fn)
+    a.equal(world.systems.renderer.opts, opts)
 })

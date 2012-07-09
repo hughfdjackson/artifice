@@ -22,17 +22,30 @@ void function(){
 
             return this
         }
+
       , e: function(){
             var e = artifice.entity()
             e.id = this._id ++
             this.entities.push(e)
             return e
         }
+      
+      , c: function(name, fn){
+            this.components[name] = fn
+            return this
+        }
+
+      , s: function(name, deps, fn, opts){
+            this.systems[name] = { 
+                deps: deps
+              , fn  : fn
+              , opts: opts
+            }
+            return this
+        }
     })
 
     artifice.entity    = factory({})
-    artifice.system    = factory({})
-    artifice.component = factory({})
 
     // exports
     if ( typeof module != 'undefined' && module.exports ) 
