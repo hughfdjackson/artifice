@@ -1,14 +1,16 @@
 void function(){
-    
-    // exports & lib obj
-    var artifice = {}
 
-    // artifice.world
-    var world = artifice.world = function(){
-        return Object.create(world.prototype).init()
+    // factory
+    var factory = function(proto){
+        var f = function(){ 
+            var o = Object.create(proto)
+            return o.init ? o.init.apply(o, arguments) : o
+        }
+        f.prototype = proto
+        return f
     }
 
-    world.prototype = { 
+    var artifice = factory({ 
 
         _id: 0
 
@@ -19,43 +21,19 @@ void function(){
 
             return this
         }
-
-      , add: function(e){
-            e.id = this._id
-            this._id += 1
+      , e: function(){
+            var e = artifice.entity()
+            e.id = this._id ++
             this.entities.push(e)
-            return this
+            return e
         }
+    })
 
-        // run a system, or all systems against all entities
-      , run: function(name){
-            if ( !name ) 
-                Object.keys(this.systems).forEach(this.run.bind(this))
-            else         
-                this.systems[name](this, this._getEntitiesForSystem(name))
+    artifice.entity    = factory({})
+    artifice.system    = factory({})
+    artifice.component = factory({})
 
-            return this
-        }
 
-      , _getEntitiesForSystem: function(name){
-            var hasSys = function(e){ 
-                return e.systems.indexOf(name) != -1 
-            }
-
-            return this.entities.filter(hasSys)
-        }
-    }
-
-    /*
-    // artifice.entity
-    var entity = artifice.entity = function(){
-        return {
-            id: null
-          , components: {}
-          , systems: []
-        }
-    }
-    */
 
     // exports
     if ( typeof module != 'undefined' && module.exports ) 
