@@ -1,6 +1,6 @@
 void function(){
 
-    // factory
+    // UTILITIES
     var factory = function(proto){
             var f = function(){ 
                 var o = Object.create(proto)
@@ -13,77 +13,81 @@ void function(){
       , contains = function(arr, val){ return arr.indexOf(val) != -1 }
       
 
+    // PUBLIC LIBRARY
+
     // main constructor; makes a new 'world'
     var artifice = factory({ 
 
-        _id: 0
+         init: function(){
+            this.entities   = artifice.set()
+            this.systems    = artifice.map()
+            this.components = artifice.map()
 
-      , init: function(){
-            this.entities = []
-            this.systems  = Object.create(artifice.systems)
-            this.components = Object.create(artifice.components)
-
-            return this
-        }
-
-      , entity: function(){
-            var e = artifice.entity()
-            e.addSystem.apply(e, arguments)
-            e.id = this._id ++
-            this.entities.push(e)
-            return e
-        }
-      
-      , component: function(name, fn){
-            this.components[name] = fn
-            return this
-        }
-
-      , system: function(name, deps, fn, opts){
-            this.systems[name] = { 
-                deps: deps
-              , fn  : fn
-              , opts: opts
-            }
-            return this
-        }
-
-      , run: function(){
-            slice(arguments).forEach(this._runOne.bind(this))
-            return this
-        }
-      , _runOne: function(name){
-            var es = this.entities.filter(function(e){ return contains(e.systems, name) })
-              , s  = this.systems[name].fn
-        
-            es.forEach(function(e){ s(this, e) }.bind(this))
-        }
-
-    // , find: function(selector){}
-    })
-
-    artifice.entity = factory({
-        
-        id  : null
-      , init: function(){
-            this.components = {}
-            this.systems    = []
-
-            return this
-        }
-
-      , addSystem: function(){
-            var args = slice(arguments)
-            this.systems = this.systems.concat(args)
             return this
         }
     })
 
-    // default systems
-    artifice.systems    = {}
+    artifice.entity = factory({
+    
+        init: function(){
+            this.components = artifice.map()    
+            this.systems    = artifice.set()
 
-    // default components 
-    artifice.components = {}
+            return this
+        }
+    })
+
+    
+    // Base storage types
+    
+    // set; an unordered array of unique items
+    artifice.set = factory({
+
+        init: function(){
+            this.items = []
+            return this
+        }
+
+      , add: function(val){
+            if ( !contains(this.items, val) ) this.items.push(val)
+            return this
+        }
+
+
+      , remove: function(val){
+            if ( contains(this.items, val) ) this.items.splice(this.items.indexOf(val), 1)
+            return this
+        }
+
+      , has: function(val){
+            return contains(this.items, val)
+        }
+    })
+
+    // map; a key-value storage, with the same constraints as a regular js object
+    // provided for API consistency
+    artifice.map = factory({
+        
+        init: function(){
+            this.items = {}
+            return this
+        }
+
+      , add: function(name, val){
+            if ( !(name in this.items) ) this.items[name] = val
+            return this
+        }       
+
+      , remove: function(name){
+            if ( name in this.items ) delete this.items[name]
+            return this
+        }
+ 
+      , has: function(name){
+            return name in this.items
+        }
+    })
+
 
     // exports
     if ( typeof module != 'undefined' && module.exports ) 
