@@ -10,23 +10,35 @@ void function(){
             return f
         }
       , slice    = Function.prototype.call.bind([].slice)
+      , hasOwnProp = Function.prototype.call.bind({}.hasOwnProperty)
       , contains = function(arr, val){ return arr.indexOf(val) != -1 }
-      
+
 
     // PUBLIC LIBRARY
 
-    // main constructor; makes a new 'world'
+    // `world` constructor; as well as main library namespace
     var artifice = factory({ 
 
          init: function(){
             this.entities   = artifice.set()
             this.systems    = artifice.map()
-            this.components = artifice.map()
+
+            return this
+        }
+
+      , run: function(name){
+            var s  = this.systems.get(name)
+              , es = this.entities.items.filter(function(e){ return e.systems.has(name) })
+              , w  = this
+
+            if ( s.global ) s.update(w, es)
+            else            es.forEach(function(e){ s.update.call(e, w) })
 
             return this
         }
     })
 
+    // `entity` constructor
     artifice.entity = factory({
     
         init: function(){
@@ -37,6 +49,10 @@ void function(){
         }
     })
 
+    artifice.system = factory({ 
+        update: null
+      , global: false
+    })
     
     // Base storage types
     
@@ -69,22 +85,26 @@ void function(){
     artifice.map = factory({
         
         init: function(){
-            this.items = {}
+            this.items = Object.create(null)
             return this
         }
 
       , add: function(name, val){
-            if ( !(name in this.items) ) this.items[name] = val
+            if ( !hasOwnProp(this.items, name) ) this.items[name] = val
             return this
         }       
 
       , remove: function(name){
-            if ( name in this.items ) delete this.items[name]
+            if ( hasOwnProp(this.items, name) ) delete this.items[name]
             return this
         }
  
       , has: function(name){
-            return name in this.items
+            return hasOwnProp(this.items, name)
+        }
+
+      , get: function(name){
+            return this.items[name]
         }
     })
 

@@ -37,4 +37,14 @@ test('map.prototype.has', function(){
     a.ok(map.has('foo'))
     a.ok(!map.has('baz'))
 
+    // edge case testing
+    a.ok(!map.has('__proto__'))
+})
+
+test('map.prototype.get', function(){
+    
+    var map = artifice.map()
+
+    map.add('foo', 'bar')
+    a.equal(map.get('foo'), 'bar')
 })
