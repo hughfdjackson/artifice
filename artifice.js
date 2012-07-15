@@ -17,7 +17,9 @@ void function(){
     // PUBLIC LIBRARY
 
     // `world` constructor; as well as main library namespace
-    var artifice = factory({ 
+    var artifice = {}
+    
+    artifice.world = factory({ 
 
          init: function(){
             this.entities   = artifice.set()
@@ -42,7 +44,7 @@ void function(){
     artifice.entity = factory({
     
         init: function(){
-            this.components = artifice.map()    
+            this.components = artifice.map()
             this.systems    = artifice.set()
 
             return this

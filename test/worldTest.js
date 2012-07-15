@@ -1,4 +1,4 @@
-suite('artifice()')
+suite('artifice.world')
 
 var artifice = require('../')
   , a        = require('assert')
@@ -8,7 +8,7 @@ var artifice = require('../')
 
 test('initialises with correct properties', function(){
 
-    var world = artifice()
+    var world = artifice.world()
 
     a.ok(world.systems      instanceof artifice.map)
     a.ok(world.entities     instanceof artifice.set)
@@ -16,17 +16,17 @@ test('initialises with correct properties', function(){
 
 test('is extensible via prototype', function(){
 
-    var world = artifice()
-    artifice.prototype.foo = sinon.spy()
+    var world = artifice.world()
+    artifice.world.prototype.foo = sinon.spy()
 
     world.foo()
 
-    a.ok(artifice.prototype.foo.called)
+    a.ok(artifice.world.prototype.foo.called)
 })
 
 test('artifice.prototype.run', function(){
     
-    var w = artifice()
+    var w = artifice.world()
       , s = artifice.system()
       , s2= artifice.system()
       , e = artifice.entity()
