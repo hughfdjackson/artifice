@@ -12,11 +12,10 @@ void function(){
       , slice    = Function.prototype.call.bind([].slice)
       , hasOwnProp = Function.prototype.call.bind({}.hasOwnProperty)
       , contains = function(arr, val){ return arr.indexOf(val) != -1 }
+      , extend   = function(t, f){ for ( var p in f ) t[p] = f[p]; return t }
 
 
     // PUBLIC LIBRARY
-
-    // `world` constructor; as well as main library namespace
     var artifice = {}
     
     artifice.world = factory({ 
@@ -60,6 +59,10 @@ void function(){
 
     artifice.system = factory({ 
         update: null
+
+      , init: function(o){
+            return extend(this, o)
+        }
       , global: false
     })
     
