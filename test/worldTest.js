@@ -7,11 +7,19 @@ var artifice = require('../')
 
 
 test('initialises with correct properties', function(){
-
     var world = artifice.world()
 
     a.ok(world.systems      instanceof artifice.map)
     a.ok(world.entities     instanceof artifice.set)
+})
+
+test('adding entities adds a uid', function(){
+    var world = artifice.world()
+      , e     = {}
+      , e2    = {}
+
+    world.entities.add(e).add(e2)
+    a.notEqual(e.id, e2.id)
 })
 
 test('is extensible via prototype', function(){

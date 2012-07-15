@@ -22,8 +22,15 @@ void function(){
     artifice.world = factory({ 
 
          init: function(){
-            this.entities   = artifice.set()
             this.systems    = artifice.map()
+            this.entities   = artifice.set()
+            
+            // ensure that entities have unique ids
+            this.entities._id = 0
+            this.entities.add = function(e){
+                e.id = this._id ++
+                return artifice.set.prototype.add.apply(this, arguments)
+            }
 
             return this
         }
