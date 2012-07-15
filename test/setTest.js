@@ -27,3 +27,18 @@ test('set.prototype.remove', function(){
     set.add(2).add(4).remove(2).add(3)
     a.ok(!set.has(2))
 })
+
+
+test('set.prototype.clone', function(){
+    
+    var set = artifice.set().add('foo').add('bar')
+      , set2= set.clone().add('baz')
+
+    a.ok(set.has('foo'))
+    a.ok(set.has('bar'))
+    a.ok(!set.has('baz'))
+
+    a.ok(set2.has('foo'))
+    a.ok(set2.has('bar'))
+    a.ok(set2.has('baz'))
+})

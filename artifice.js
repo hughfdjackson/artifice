@@ -90,6 +90,12 @@ void function(){
       , has: function(val){
             return contains(this.items, val)
         }
+
+      , clone: function(){
+            var set = artifice.set()
+            set.items = this.items.slice()
+            return set
+        }
     })
 
     // map; a key-value storage, with the same constraints as a regular js object
@@ -117,6 +123,12 @@ void function(){
 
       , get: function(name){
             return this.items[name]
+        }
+
+      , clone: function(){
+            var map = artifice.map()
+            map.items = extend(Object.create(null), this.items)
+            return map
         }
     })
 

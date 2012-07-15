@@ -48,3 +48,17 @@ test('map.prototype.get', function(){
     map.add('foo', 'bar')
     a.equal(map.get('foo'), 'bar')
 })
+
+test('map.prototype.cone', function(){
+
+    var map = artifice.map().add('foo', '').add('bar', '') 
+      , map2= map.clone().add('baz', '')
+    
+    a.ok(map.has('foo'))
+    a.ok(map.has('bar'))
+    a.ok(!map.has('baz'))
+
+    a.ok(map2.has('foo'))
+    a.ok(map2.has('bar'))
+    a.ok(map2.has('baz'))
+})
