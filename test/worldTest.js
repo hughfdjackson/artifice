@@ -11,6 +11,10 @@ test('initialises with correct properties', function(){
 
     a.ok(world.systems      instanceof artifice.map)
     a.ok(world.entities     instanceof artifice.set)
+
+    // aliases
+    a.equal(world.entities, world.e)
+    a.equal(world.systems,  world.s)
 })
 
 test('adding entities adds a uid', function(){

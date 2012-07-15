@@ -21,8 +21,8 @@ void function(){
     artifice.world = factory({ 
 
          init: function(){
-            this.systems    = artifice.map()
-            this.entities   = artifice.set()
+            this.systems  = this.s = artifice.map()
+            this.entities = this.e = artifice.set()
             
             // ensure that entities have unique ids
             this.entities._id = 0
@@ -50,8 +50,8 @@ void function(){
     artifice.entity = factory({
     
         init: function(){
-            this.components = artifice.map()
-            this.systems    = artifice.set()
+            this.components = this.c = artifice.map()
+            this.systems    = this.s = artifice.set()
 
             return this
         }
