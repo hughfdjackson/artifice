@@ -52,6 +52,7 @@ void function(){
         init: function(){
             this.components = this.c = artifice.map()
             this.systems    = this.s = artifice.set()
+            this.tags       = this.t = artifice.set()
 
             return this
         }
