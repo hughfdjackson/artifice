@@ -1,4 +1,4 @@
-void function(){
+void function(root){
 
     // UTILITIES
     var factory = function(proto){
