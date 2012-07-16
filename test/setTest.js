@@ -42,3 +42,12 @@ test('set.prototype.clone', function(){
     a.ok(set2.has('bar'))
     a.ok(set2.has('baz'))
 })
+
+test('set.prototype.filter', function(){
+
+    var set = artifice.set().add('foo').add('quux')
+      , res = set.filter(function(v){ return v.length == 3 })
+
+    a.ok(res.has('foo'))
+    a.ok(!res.has('quux'))
+})

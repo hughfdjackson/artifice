@@ -49,7 +49,7 @@ test('map.prototype.get', function(){
     a.equal(map.get('foo'), 'bar')
 })
 
-test('map.prototype.cone', function(){
+test('map.prototype.clone', function(){
 
     var map = artifice.map().add('foo', '').add('bar', '') 
       , map2= map.clone().add('baz', '')
@@ -61,4 +61,13 @@ test('map.prototype.cone', function(){
     a.ok(map2.has('foo'))
     a.ok(map2.has('bar'))
     a.ok(map2.has('baz'))
+})
+
+test('map.prototype.filter', function(){
+
+    var map = artifice.map().add('foo', { x: true }).add('bar', { x: false })
+      , res = map.filter(function(v, k){ return v.x == true })
+
+    a.ok(res.has('foo'))
+    a.ok(!res.has('bar'))
 })

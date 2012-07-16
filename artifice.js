@@ -96,6 +96,12 @@ void function(){
             set.items = this.items.slice()
             return set
         }
+
+      , filter: function(fn){
+            var set = artifice.set()
+            set.items = this.items.filter(fn)
+            return set
+        }
     })
 
     // map; a key-value storage, with the same constraints as a regular js object
@@ -128,6 +134,16 @@ void function(){
       , clone: function(){
             var map = artifice.map()
             map.items = extend(Object.create(null), this.items)
+            return map
+        }
+
+      , filter: function(fn){
+            var map = artifice.map()
+              , items = this.items
+
+            Object.keys(items).forEach(function(k){
+                if ( fn(items[k], k) ) map.add(k, items[k]) 
+            })
             return map
         }
     })
